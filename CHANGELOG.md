@@ -1,44 +1,44 @@
-# 1.1.5版本
+# Version 1.1.5
 
-1. 调整回测引擎中，对策略初始化数据的加载处理方式（采用回测起始日往前按照自然日加载）
-2. 调整优化结果的输出方式（用字典替代字符串）
-3. 移除成交记录为空时的直接返回逻辑
+1. Adjusted the way of loading strategy initialization data in the backtesting engine (using the backtesting start date to be loaded by natural days)
+2. Adjust the output method of optimization results (replace strings with dictionaries)
+3. Remove the direct return logic when the transaction record is empty.
 
-# 1.1.4版本
+# Version 1.1.4
 
-1. 加载策略类时，过滤TargetPosTemplate模板
-2. 移除策略配置时，同时删除该策略的缓存数据
+1. Filter TargetPosTemplate templates when loading strategy class
+2. When removing a strategy configuration, delete the strategy's cached data at the same time
 
-# 1.1.3版本
+# Version 1.1.3
 
-1. 使用vnpy.trader.database中统一定义的时区来加载数据
-2. 策略增加合约乘数查询函数get_size
-3. 改为使用主引擎提供的OffsetConveter，不再独立维护
-4. 增加调用数据服务获取历史数据过程中的日志输出
-5. 增加用于控制优化进程数量的max_workers参数
+1. Use the unified timezone defined in vnpy.trader.database to load the data
+2. Add contract multiplier query function get_size to policies
+3. Change to use the OffsetConveter provided by the main engine, no longer independently maintained
+4. Increase the log output during the process of calling the data service to obtain historical data
+5. Add the max_workers parameter to control the number of optimization processes.
 
-# 1.1.2版本
+# Version 1.1.2
 
-1. 增加对回测过程中资金爆仓（小于等于0）情况的检查
+1. Add a check on the situation of funds burst (less than or equal to 0) during backtesting.
 
-# 1.1.1版本
+# 1.1.1 version
 
-1. 使用zoneinfo替换pytz库
-2. 调整安装脚本setup.cfg，添加Python版本限制
+1. Use zoneinfo to replace pytz library
+2. Adjust the installation script setup.cfg to add Python version restriction.
 
-# 1.1.0版本
+# 1.1.0 version
 
-1. 添加策略实例查找功能
-2. 移除反向合约支持
-3. 修复回测统计中的百分比回撤计算问题
+1. Add strategy instance lookup function
+2. Remove reverse contract support
+3. Fix the percentage retracement calculation problem in the backtest statistics
 
-# 1.0.9版本
+# 1.0.9 version
 
-1. 完善变量和函数类型声明
-2. 对策略下拉框中的策略名称根据首字母排序
-3. 替换QtCore.pyqtSignal为PySide的QtCore.Signal
+1. Improve variable and function type declarations
+2. Sort strategy names in the strategy drop-down box by first letter.
+3. Replace QtCore.pyqtSignal with PySide's QtCore.
 
-# 1.0.8版本
+# Signal to PySide's QtCore.
 
-1. 将加载历史数据的异步回放，从引擎移动到策略模板中
-2. 将模块的图标文件信息，改为完整路径字符串
+1. Move asynchronous playback for loading historical data from the engine to the strategy template
+2. Change the icon file information of the module to the full path string

@@ -12,7 +12,7 @@ from time import time
 
 class TestStrategy(CtaTemplate):
     """"""
-    author = "用Python的交易员"
+    author = "Trader in Python"
 
     test_trigger = 10
 
@@ -38,19 +38,19 @@ class TestStrategy(CtaTemplate):
         """
         Callback when strategy is inited.
         """
-        self.write_log("策略初始化")
+        self.write_log("Strategy initialization")
 
     def on_start(self):
         """
         Callback when strategy is started.
         """
-        self.write_log("策略启动")
+        self.write_log("Strategy started")
 
     def on_stop(self):
         """
         Callback when strategy is stopped.
         """
-        self.write_log("策略停止")
+        self.write_log("Strategy stopped")
 
     def on_tick(self, tick: TickData):
         """
@@ -71,9 +71,9 @@ class TestStrategy(CtaTemplate):
                 start = time()
                 test_func()
                 time_cost = (time() - start) * 1000
-                self.write_log("耗时%s毫秒" % (time_cost))
+                self.write_log("Took %s milliseconds." % (time_cost))
             else:
-                self.write_log("测试已全部完成")
+                self.write_log("Testing is all done")
                 self.test_all_done = True
 
         self.put_event()
@@ -105,19 +105,19 @@ class TestStrategy(CtaTemplate):
     def test_market_order(self):
         """"""
         self.buy(self.last_tick.limit_up, 1)
-        self.write_log("执行市价单测试")
+        self.write_log("Executing market order test")
 
     def test_limit_order(self):
         """"""
         self.buy(self.last_tick.limit_down, 1)
-        self.write_log("执行限价单测试")
+        self.write_log("Executing limit order test")
 
     def test_stop_order(self):
         """"""
         self.buy(self.last_tick.ask_price_1, 1, True)
-        self.write_log("执行停止单测试")
+        self.write_log("Executing stoplist test")
 
     def test_cancel_all(self):
         """"""
         self.cancel_all()
-        self.write_log("执行全部撤单测试")
+        self.write_log("Executing cancel all test")

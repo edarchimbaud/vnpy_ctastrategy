@@ -156,13 +156,13 @@ class BacktestingEngine:
 
     def load_data(self) -> None:
         """"""
-        self.output("开始加载历史数据")
+        self.output("Start loading historical data")
 
         if not self.end:
             self.end = datetime.now()
 
         if self.start >= self.end:
-            self.output("起始日期必须小于结束日期")
+            self.output("The start date must be less than the end date")
             return
 
         self.history_data.clear()       # Clear previously loaded history data
@@ -179,7 +179,7 @@ class BacktestingEngine:
 
         while start < self.end:
             progress_bar: str = "#" * int(progress * 10 + 1)
-            self.output(f"加载进度：{progress_bar} [{progress:.0%}]")
+            self.output(f"Loading progress: {progress_bar} [{progress:.0%}]")
 
             end: datetime = min(end, self.end)  # Make sure end time stays within set range
 
@@ -207,7 +207,7 @@ class BacktestingEngine:
             start = end + interval_delta
             end += progress_delta
 
-        self.output(f"历史数据加载完成，数据量：{len(self.history_data)}")
+        self.output(f"Historical data loading is complete with the amount of data:{len(self.history_data)}")
 
     def run_backtesting(self) -> None:
         """"""
@@ -218,11 +218,11 @@ class BacktestingEngine:
 
         self.strategy.on_init()
         self.strategy.inited = True
-        self.output("策略初始化完成")
+        self.output("Strategy initialization complete.")
 
         self.strategy.on_start()
         self.strategy.trading = True
-        self.output("开始回放历史数据")
+        self.output("Start backtesting on historical data.")
 
         total_size: int = len(self.history_data)
         batch_size: int = max(int(total_size / 10), 1)
@@ -233,23 +233,23 @@ class BacktestingEngine:
                 try:
                     func(data)
                 except Exception:
-                    self.output("触发异常，回测终止")
+                    self.output("Triggered exception, backtest terminated.")
                     self.output(traceback.format_exc())
                     return
 
             progress = min(ix / 10, 1)
             progress_bar: str = "=" * (ix + 1)
-            self.output(f"回放进度：{progress_bar} [{progress:.0%}]")
+            self.output(f"Backtest progress:{progress_bar} [{progress:.0%}]")
 
         self.strategy.on_stop()
-        self.output("历史数据回放结束")
+        self.output("End of historical backtest")
 
     def calculate_result(self) -> DataFrame:
         """"""
-        self.output("开始计算逐日盯市盈亏")
+        self.output("Starting to calculate the day-to-day profit/loss")
 
         if not self.trades:
-            self.output("回测成交记录为空")
+            self.output("Backtest trade record is empty")
 
         # Add trade data into daily reuslt.
         for trade in self.trades.values():
@@ -282,12 +282,12 @@ class BacktestingEngine:
 
         self.daily_df = DataFrame.from_dict(results).set_index("date")
 
-        self.output("逐日盯市盈亏计算完成")
+        self.output("Calculation of day-by-day profit/loss is completed")
         return self.daily_df
 
     def calculate_statistics(self, df: DataFrame = None, output=True) -> dict:
         """"""
-        self.output("开始计算策略统计指标")
+        self.output("Start calculating strategy statistics metrics")
 
         # Check DataFrame input exterior
         if df is None:
@@ -344,7 +344,7 @@ class BacktestingEngine:
             # All balance value needs to be positive
             positive_balance = (df["balance"] > 0).all()
             if not positive_balance:
-                self.output("回测中出现爆仓（资金小于等于0），无法计算策略统计指标")
+                self.output("The strategy statistics cannot be calculated if there is a burst position (funds less than or equal to 0) in the backtest.")
 
         # Calculate statistics value
         if positive_balance:
@@ -401,38 +401,38 @@ class BacktestingEngine:
         # Output
         if output:
             self.output("-" * 30)
-            self.output(f"首个交易日：\t{start_date}")
-            self.output(f"最后交易日：\t{end_date}")
+            self.output(f"First trading day:\t{start_date}")
+            self.output(f"Last trading day:\t{end_date}")
 
-            self.output(f"总交易日：\t{total_days}")
-            self.output(f"盈利交易日：\t{profit_days}")
-            self.output(f"亏损交易日：\t{loss_days}")
+            self.output(f"Total trading days:\t{total_days}")
+            self.output(f"Profitable trading day:\t{profit_days}")
+            self.output(f"Losing trading days:\t{loss_days}")
 
-            self.output(f"起始资金：\t{self.capital:,.2f}")
-            self.output(f"结束资金：\t{end_balance:,.2f}")
+            self.output(f"Starting capital:\t{self.capital:,.2f}")
+            self.output(f"Ending balance:\t{end_balance:,.2f}")
 
-            self.output(f"总收益率：\t{total_return:,.2f}%")
-            self.output(f"年化收益：\t{annual_return:,.2f}%")
-            self.output(f"最大回撤: \t{max_drawdown:,.2f}")
-            self.output(f"百分比最大回撤: {max_ddpercent:,.2f}%")
-            self.output(f"最长回撤天数: \t{max_drawdown_duration}")
+            self.output(f"Total return:\t{total_return:,.2f}%")
+            self.output(f"Annualized returns:\t{annual_return:,.2f}%")
+            self.output(f"Max drawdown:\t{max_drawdown:,.2f}")
+            self.output(f"Max drawdown percentage:\t{max_ddpercent:,.2f}%")
+            self.output(f"Max drawdown duration:\t{max_drawdown_duration}")
 
-            self.output(f"总盈亏：\t{total_net_pnl:,.2f}")
-            self.output(f"总手续费：\t{total_commission:,.2f}")
-            self.output(f"总滑点：\t{total_slippage:,.2f}")
-            self.output(f"总成交金额：\t{total_turnover:,.2f}")
-            self.output(f"总成交笔数：\t{total_trade_count}")
+            self.output(f"Total P&L:\t{total_net_pnl:,.2f}")
+            self.output(f"Total commissions:\t{total_commission:,.2f}")
+            self.output(f"Total slippage:\t{total_slippage:,.2f}")
+            self.output(f"Total turnover:\t{total_turnover:,.2f}")
+            self.output(f"Total trade count:\t{total_trade_count}")
 
-            self.output(f"日均盈亏：\t{daily_net_pnl:,.2f}")
-            self.output(f"日均手续费：\t{daily_commission:,.2f}")
-            self.output(f"日均滑点：\t{daily_slippage:,.2f}")
-            self.output(f"日均成交金额：\t{daily_turnover:,.2f}")
-            self.output(f"日均成交笔数：\t{daily_trade_count}")
+            self.output(f"Daily net P&L:\t{daily_net_pnl:,.2f}")
+            self.output(f"Daily commission:\t{daily_commission:,.2f}")
+            self.output(f"Daily slippage:\t{daily_slippage:,.2f}")
+            self.output(f"Daily turnover:\t{daily_turnover:,.2f}")
+            self.output(f"Daily trade count:\t{daily_trade_count}")
 
-            self.output(f"日均收益率：\t{daily_return:,.2f}%")
-            self.output(f"收益标准差：\t{return_std:,.2f}%")
-            self.output(f"Sharpe Ratio：\t{sharpe_ratio:,.2f}")
-            self.output(f"收益回撤比：\t{return_drawdown_ratio:,.2f}")
+            self.output(f"Daily return:\t{daily_return:,.2f}%")
+            self.output(f"Returns standard deviation:\t{return_std:,.2f}%")
+            self.output(f"Sharpe Ratio:\t{sharpe_ratio:,.2f}")
+            self.output(f"Return drawdown ratio:\t{return_drawdown_ratio:,.2f}")
 
         statistics: dict = {
             "start_date": start_date,
@@ -469,7 +469,7 @@ class BacktestingEngine:
                 value = 0
             statistics[key] = np.nan_to_num(value)
 
-        self.output("策略统计指标计算完成")
+        self.output("Strategy statistics metrics calculation complete")
         return statistics
 
     def show_chart(self, df: DataFrame = None) -> None:
@@ -536,7 +536,7 @@ class BacktestingEngine:
 
         if output:
             for result in results:
-                msg: str = f"参数：{result[0]}, 目标：{result[1]}"
+                msg: str = f"Arguments: {result[0]}, Target: {result[1]}"
                 self.output(msg)
 
         return results
@@ -564,7 +564,7 @@ class BacktestingEngine:
 
         if output:
             for result in results:
-                msg: str = f"参数：{result[0]}, 目标：{result[1]}"
+                msg: str = f"Arguments: {result[0]}, Target: {result[1]}"
                 self.output(msg)
 
         return results
