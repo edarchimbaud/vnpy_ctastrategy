@@ -17,7 +17,7 @@ An application module designed for single-scalar CTA quantitative strategies, wh
 
 ## Installation
 
-The installation environment is recommended to be based on version 3.6.0 or above of [[**VeighNa Studio**](https://www.vnpy.com)].
+The installation environment is recommended to be based on version 3.6.0 or above of [[**VeighNa Studio**](https://github.com/edarchimbaud/vnpy)].
 
 Use the pip command directly:
 
