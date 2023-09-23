@@ -76,14 +76,10 @@ class MaStrategy(CtaTemplate):
         cross_over = self.fast_ma0 > self.slow_ma0
         cross_below = self.fast_ma0 < self.slow_ma0
 
-        if cross_over:
-            if self.pos == 0:
-                self.buy(bar.close_price, 1)
-            elif self.pos < 0:
-                self.cover(bar.close_price, 1)
-
+        if cross_over and self.pos <= 0:
+            self.buy(bar.close_price, volume=1)
         elif cross_below and self.pos > 0:
-            self.sell(bar.close_price, 1)
+            self.sell(bar.close_price, self.pos)
 
         self.put_event()
 
